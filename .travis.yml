@@ -3,6 +3,6 @@ sudo: required
 language: generic
 
 script:
-  - docker/builditall
+  - cd docker && ./builditall
 
 
