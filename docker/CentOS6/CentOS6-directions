@@ -57,12 +57,12 @@ TESTREQS="valgrind"
 NEO4J_DEPS="which lsof tar"
 NEOEDITION=community
 NEOSERVICE=neo4j-service
-ASSIMVERS=rel_2_dev
+ASSIMVERS=$TRAVIS_BRANCH
 REPO=assimilation/assimilation-official
 if
 	[ -z "$ASSIMVERSION" ]
 then
-	HASH=$(git ls-remote --heads https://github.com/$REPO | grep refs/heads/rel_2_dev | cut -c1-7)
+	HASH=$(git ls-remote --heads https://github.com/$REPO | grep refs/heads/$TRAVIS_BRANCH | cut -c1-7)
   	export ASSIMVERSION="$(echo $REPO | tr '/' '-')-$HASH"
 fi
 echo "Building Version $ASSIMVERSION" >&2

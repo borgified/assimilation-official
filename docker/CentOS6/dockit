@@ -30,7 +30,7 @@ DOCKER=docker
 CMA=assim.centos6
 PKGDIR=$(pwd)/packages
 REPO=assimilation/assimilation-official
-HASH=$(git ls-remote --heads https://github.com/$REPO | grep refs/heads/rel_2_dev | cut -c1-7)
+HASH=$(git ls-remote --heads https://github.com/$REPO | grep refs/heads/$TRAVIS_BRANCH | cut -c1-7)
 test ! -z "$HASH"
 export ASSIMVERSION="$(echo $REPO | tr '/' '-')-$HASH"
 echo "Working with version $ASSIMVERSION"
