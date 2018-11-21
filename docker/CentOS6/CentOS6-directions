@@ -45,7 +45,7 @@ DROPBOX=https://www.dropbox.com/sh/4olv5bw1cx8bduq/AADkfkqzXOLfA-cwHIdlcdGTa/bui
 #
 CMAKE=cmake28
 PYSCL=python27
-BUILDREQS="rpm-build tar scl-utils-build glib2-devel libpcap-devel zlib-devel gcc scl-utils $PYSCL-python $PYSCL-python-devel $CMAKE $PYSCL-python-setuptools python-demjson"
+BUILDREQS="rpm-build tar scl-utils-build glib2-devel libpcap-devel zlib-devel gcc scl-utils $PYSCL-python $PYSCL-python-devel $CMAKE $PYSCL-python-setuptools python-demjson $PYSCL-build"
 BUILDREQS_2="$PYSCL-python-setuptools"
 EZINST="pip"
 PIPBUILD="ctypesgen"
@@ -57,7 +57,7 @@ TESTREQS="valgrind"
 NEO4J_DEPS="which lsof tar"
 NEOEDITION=community
 NEOSERVICE=neo4j-service
-ASSIMVERS=master
+ASSIMVERS=rel_2_dev
 REPO=assimilation/assimilation-official
 if
 	[ -z "$ASSIMVERSION" ]
@@ -70,9 +70,9 @@ echo "Building Version $ASSIMVERSION" >&2
 ASSIMURL=https://github.com/$REPO/tarball/${ASSIMVERS}
 
 ARCH=x86_64
-LIBSODIUMVERS=1.0.10-1
-LIBSODIUMURL="ftp://mandril.creatis.insa-lyon.fr/linux/remi/enterprise/6/remi/$ARCH/libsodium-last-${LIBSODIUMVERS}.el6.remi.$ARCH.rpm"
-LIBSODIUMDEVURL="ftp://mandril.creatis.insa-lyon.fr/linux/remi/enterprise/6/remi/$ARCH/libsodium-last-devel-${LIBSODIUMVERS}.el6.remi.$ARCH.rpm"
+LIBSODIUMVERS=1.0.14-1
+LIBSODIUMURL="http://rpms.remirepo.net/enterprise/6/remi/$ARCH/libsodium-last-${LIBSODIUMVERS}.el6.remi.$ARCH.rpm"
+LIBSODIUMDEVURL="http://rpms.remirepo.net/enterprise/6/remi/$ARCH/libsodium-last-devel-${LIBSODIUMVERS}.el6.remi.$ARCH.rpm"
 NEO4JYUM=http://yum.neo4j.org
 RPMDIR=/root/rpmbuild
 RPMSRCDIR=$RPMDIR/SOURCES
@@ -119,6 +119,7 @@ rpm_build() {
 	tar xvf ${TARBALL} \${ASSIMVERSION}/docker/CentOS6/assimilation-cma.spec
 	rm -f $RPMDIR/RPMS/${ARCH}/assimilation-*.rpm
 	mv $TARBALL $RPMSRCDIR/\${ASSIMVERSION}.tgz
+        scl enable $PYSCL 'pip install --upgrade pip'
 	scl enable $PYSCL 'easy_install pip'
 	scl enable $PYSCL 'pip install ${PIPBUILD}'
 	rpmbuild -ba /tmp/assim-rpm/\${ASSIMVERSION}/docker/CentOS6/assimilation-cma.spec --define="assimversion \${ASSIMVERSION}" --define="libsodium libsodium-last"
