@@ -8,7 +8,7 @@ ENV NEODATA /var/lib/neo4j/data
 ENV NEOSERVFILE /lib/systemd/system/neo4j.service
 ENV CERT https://debian.neo4j.org/neotechnology.gpg.key
 ENV GITREPOSITORY assimilation-official
-ENV GITVERSION rel_2_dev
+ENV GITVERSION master
 ENV GITHUB https://github.com/assimilation/$GITREPOSITORY
 ENV GITTARZAN $GITHUB/tarball/$GITVERSION
 ENV GITHASH 5e5971a # Will be updated by "dockit" script
@@ -74,7 +74,6 @@ WORKDIR /root/assimilation/src/cma
 RUN if test -f /etc/rsyslog.conf; then  sed /etc/rsyslog.conf -e 's%^$.*imjournal%#&%' -e 's%.*$OmitLocalLogging.*%$OmitLocalLogging off%' > /tmp/foo; fi
 RUN printf "%s\n%s\n" '$ModLoad imuxsock' '$SystemLogSocketName /dev/log' >> /tmp/foo
 RUN  cp /tmp/foo /etc/rsyslog.conf; rm /tmp/foo
-RUN pip install inject
 RUN /usr/sbin/assimcli genkeys
 RUN $YUM install python-demjson
 RUN /usr/sbin/rsyslogd&  $NEOROOT/bin/neo4j console & sleep 20; py.test -rw -v tests
