@@ -131,7 +131,7 @@ buildcentos() {
     # Similar for Red Hat:
     #  https://access.redhat.com/support/policy/updates/errata
 
-    attemptbuild CentOS6 # Centos6 is unique
+    #attemptbuild CentOS6 # Centos6 is unique
     for centos in centos7
     do
         attemptbuild CentOS $centos
