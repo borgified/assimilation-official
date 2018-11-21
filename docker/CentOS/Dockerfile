@@ -8,7 +8,7 @@ ENV NEODATA /var/lib/neo4j/data
 ENV NEOSERVFILE /lib/systemd/system/neo4j.service
 ENV CERT https://debian.neo4j.org/neotechnology.gpg.key
 ENV GITREPOSITORY assimilation-official
-ENV GITVERSION master
+ENV GITVERSION @TRAVIS_BRANCH@
 ENV GITHUB https://github.com/assimilation/$GITREPOSITORY
 ENV GITTARZAN $GITHUB/tarball/$GITVERSION
 ENV GITHASH 5e5971a # Will be updated by "dockit" script
