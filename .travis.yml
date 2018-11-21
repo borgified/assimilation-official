@@ -9,3 +9,5 @@ jobs:
       name: "CentOS6 and CentOS7"
       script:
         - cd $TRAVIS_BUILD_DIR/docker && ./build_one.sh centos
+        - cat $TRAVIS_BUILD_DIR/docker/CentOS6/./build.out
+        - cat $TRAVIS_BUILD_DIR/docker/CentOS/centos7/build.out
