@@ -62,7 +62,7 @@ REPO=assimilation/assimilation-official
 if
 	[ -z "$ASSIMVERSION" ]
 then
-	HASH=$(git ls-remote --heads https://github.com/$REPO | grep refs/heads/master | cut -c1-7)
+	HASH=$(git ls-remote --heads https://github.com/$REPO | grep refs/heads/rel_2_dev | cut -c1-7)
   	export ASSIMVERSION="$(echo $REPO | tr '/' '-')-$HASH"
 fi
 echo "Building Version $ASSIMVERSION" >&2
