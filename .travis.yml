@@ -3,6 +3,4 @@ sudo: required
 language: generic
 
 script:
-  - cd docker && ./builditall
-
-
+  - cd $TRAVIS_BUILD_DIR/buildtools/ci/CentOS6 && docker build .
