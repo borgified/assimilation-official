@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 . builditall_functions
 
 TMPDIR=$(mktemp -d)
