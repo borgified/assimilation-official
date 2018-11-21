@@ -3,4 +3,13 @@ sudo: required
 language: generic
 
 script:
-  - cd $TRAVIS_BUILD_DIR/buildtools/ci/CentOS6 && docker build .
+jobs:
+  include:
+    - stage: "build and test"
+      name: "CentOS6"
+      script:
+        - cd $TRAVIS_BUILD_DIR/buildtools/ci/CentOS6 && docker build .
+    - stage: "build and test"
+      name: "CentOS7"
+      script:
+        - cd $TRAVIS_BUILD_DIR/docker/CentOS && ./dockit centos7

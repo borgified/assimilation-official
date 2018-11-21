@@ -80,7 +80,7 @@ case $1 in
             -e 's%RUN service rsyslog start.*testify%#&%'       \
             > Dockerfile
         ;;
-    *)  GITHASH=$(git rev-parse --short HEAD)
+    *)  GITHASH=$(git rev-parse --short rel_2_dev)
         cat $DOCKERFILE |                                       \
             sed -e "s%centos:latest%centos:$CENTOSREL%g" $EFLAG \
             -e "s%^ENV GITHASH .*%ENV GITHASH $GITHASH%g"       \
