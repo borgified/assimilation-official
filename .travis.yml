@@ -6,8 +6,8 @@ script:
 jobs:
   include:
     - stage: "build and test"
-      name: "CentOS6 and CentOS7"
+      name: "Debian 9 (stretch)"
       script:
-        - cd $TRAVIS_BUILD_DIR/docker && ./build_one.sh centos
-        - cat $TRAVIS_BUILD_DIR/docker/CentOS6/./build.out
-        - cat $TRAVIS_BUILD_DIR/docker/CentOS/centos7/build.out
+        - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/Dockerfile .
+        - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/timezone .
+        - docker build .

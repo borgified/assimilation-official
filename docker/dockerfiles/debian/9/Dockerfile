@@ -30,11 +30,6 @@
 ######################################################
 FROM debian:stretch
 MAINTAINER Alan Robertson <alanr@assimilationsystems.com>
-ENV GITREPOSITORY assimilation-official
-ENV GITVERSION master
-ENV GITHUB https://github.com/assimilation/$GITREPOSITORY
-ENV GITTARZAN $GITHUB/tarball/$GITVERSION
-ENV GITRAW https://raw.githubusercontent.com/assimilation/$GITREPOSITORY/$GITVERSION/
 ENV TERM linux
 ENV DEBIAN_FRONTEND noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
@@ -64,15 +59,14 @@ RUN apt-get update && apt-get -y install --no-install-recommends neo4j=3.0.0
 ###############################################################
 RUN cd /root && mkdir -p assimilation/bin/buildtools assimilation/bin/libsodium assimilation/packages
 #   Import our script for building libsodium...
-ADD $GITRAW/buildtools/libsodium.mkdeb.sh /root/assimilation/bin/buildtools/
+COPY buildtools/libsodium.mkdeb.sh /root/assimilation/bin/buildtools/
 RUN cd /root/assimilation/bin/libsodium && bash ../buildtools/libsodium.mkdeb.sh &&  dpkg --install *.deb && cp *.deb /root/assimilation/packages
 
 ###############################################################
 #   Build and install Packages from Assimilation Source
 ###############################################################
 RUN echo Sat Dec  1 00:37:45 PST 2018 # to make sure we always rebuild
-ADD $GITTARZAN /root/assimilation/
-RUN cd /root/assimilation/ && tar xzf $GITVERSION && echo [Aa]ssimilation-* && mv [Aa]ssimilation-* src
+COPY . /root/assimilation/
 RUN cd /root/assimilation/bin; cmake ../src && make install && cpack
 #   Set up Assimilation encryption keys
 RUN mkdir -p /usr/share/assimilation/crypto.d  /tmp/cores # putting --mode 0700 on mkdir screws up security attributes (don't do it!)
