@@ -2,20 +2,22 @@ sudo: required
 
 language: generic
 
+os:
+  - debian
+  - ubuntu
+
+
+
+
 script:
 jobs:
   include:
-    - stage: "build and test"
-      if: branch = hello
-      name: "Debian 9 (stretch)"
-      script:
-        - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/Dockerfile .
-        - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/timezone .
-        - docker build .
-     - stage: "build"
-       name: "Ubuntu 18.04"
-       script:
-        - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/Dockerfile .
-        - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/timezone .
-        - docker build .
-
+    - stage: build
+      name: debian
+      matrix:
+        include:
+          - version: 9
+            script:
+              - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/$version/Dockerfile .
+              - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/$version/timezone .
+              - docker build .
