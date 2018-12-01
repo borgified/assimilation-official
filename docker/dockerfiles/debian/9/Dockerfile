@@ -66,7 +66,7 @@ RUN cd /root/assimilation/bin/libsodium && bash ../buildtools/libsodium.mkdeb.sh
 #   Build and install Packages from Assimilation Source
 ###############################################################
 RUN echo Sat Dec  1 00:37:45 PST 2018 # to make sure we always rebuild
-COPY . /root/assimilation/
+COPY . /root/assimilation/src
 RUN cd /root/assimilation/bin; cmake ../src && make install && cpack
 #   Set up Assimilation encryption keys
 RUN mkdir -p /usr/share/assimilation/crypto.d  /tmp/cores # putting --mode 0700 on mkdir screws up security attributes (don't do it!)
