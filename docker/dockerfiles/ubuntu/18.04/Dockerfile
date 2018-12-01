@@ -28,7 +28,7 @@
 ######################################################
 #   Install required base packages
 ######################################################
-FROM debian:stretch
+FROM ubuntu:18.04
 MAINTAINER Alan Robertson <alanr@assimilationsystems.com>
 ENV TERM linux
 ENV DEBIAN_FRONTEND noninteractive
@@ -42,38 +42,11 @@ RUN pip install pytz
 RUN pip install ctypesgen 'py2neo==2.0.8' getent pytest inject
 
 ###############################################################
-#   Neo4j installation
-###############################################################
-ENV NEODBROOT /var/lib/neo4j/
-# no backports needed
-RUN apt-get -y update && apt-get -y install --no-install-recommends openjdk-8-jre
-# Import the Neo4j signing key
-RUN wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add - 
-# Create an Apt sources.list file for neo4j.
-RUN neoversion=stable; echo "deb http://debian.neo4j.org/repo ${neoversion}/" > /etc/apt/sources.list.d/neo4j.list
-#RUN ls -l /etc/apt/sources.list.d && cat /etc/apt/sources.list.d/neo4j.list
-RUN apt-get update && apt-get -y install --no-install-recommends neo4j=3.0.0
-#
-
-###############################################################
-#   Create libsodium packages
-###############################################################
-RUN cd /root && mkdir -p assimilation/bin/buildtools assimilation/bin/libsodium assimilation/packages
-#   Import our script for building libsodium...
-COPY buildtools/libsodium.mkdeb.sh /root/assimilation/bin/buildtools/
-RUN cd /root/assimilation/bin/libsodium && bash ../buildtools/libsodium.mkdeb.sh &&  dpkg --install *.deb && cp *.deb /root/assimilation/packages
-
-###############################################################
 #   Build and install Packages from Assimilation Source
 ###############################################################
 RUN echo Sat Dec  1 00:37:45 PST 2018 # to make sure we always rebuild
 COPY . /root/assimilation/src
+RUN mkdir -p /root/assimilation/bin
+RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz && tar xvfz LATEST.tar.gz \
+&& cd libsodium* && ./configure && make && make check && make install && ldconfig
 RUN cd /root/assimilation/bin; cmake ../src && make install && cpack
-#   Set up Assimilation encryption keys
-RUN mkdir -p /usr/share/assimilation/crypto.d  /tmp/cores # putting --mode 0700 on mkdir screws up security attributes (don't do it!)
-RUN chown assimilation -R /usr/share/assimilation/crypto.d/ && chmod 0700 /usr/share/assimilation/crypto.d && /usr/sbin/assimcli genkeys && chmod a+w /tmp/cores
-#   Set up syslog to log to host
-RUN PARENT=$(/sbin/route | grep '^default' | cut -c17-32); PARENT=$(echo $PARENT); echo '*.*   @@'"${PARENT}:514" > /etc/rsyslog.d/99-remote.conf
-#   Install Assimilation packages
-RUN lsb_release -a
-RUN cd /root/assimilation/bin && dpkg --install assimilation-*.deb && cp assimilation-*.deb /root/assimilation/packages
