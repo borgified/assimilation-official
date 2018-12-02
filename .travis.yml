@@ -1,6 +1,9 @@
 sudo: required
 
-language: generic
+language: python
+
+install:
+  - pip install awscli
 
 jobs:
   include:
