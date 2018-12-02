@@ -13,13 +13,13 @@ jobs:
       script:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/timezone .
-        - docker build .
+          #- docker build .
     - stage: build
       name: ubuntu
       script:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/timezone .
-        - docker build .
+          #- docker build .
 
 deploy:
   provider: s3
