@@ -12,22 +12,22 @@ jobs:
       script:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/timezone .
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net/ s3 cp README.md s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp README.md s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/
     - stage: build
       name: ubuntu
       script:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/timezone .
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net/ s3 cp README.md s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp README.md s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/
     - stage: test
       name: test
       script:
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net/ s3 cp s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/README.md .
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/README.md .
         - cat README.md
     - stage: deploy
       name: deploy
       script:
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net/ s3 cp s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/README.md build-artifacts/
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp s3://assimilation-project/$TRAVIS_JOB_NAME/$TRAVIS_JOB_NUMBER/README.md build-artifacts/
       deploy:
         provider: s3
         endpoint: https://s3.us-east.objectstorage.softlayer.net
