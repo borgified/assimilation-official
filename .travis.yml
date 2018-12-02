@@ -20,11 +20,16 @@ jobs:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/timezone .
           #- docker build .
-
-deploy:
-  provider: s3
-  endpoint: https://s3.us-east.objectstorage.softlayer.net
-  region: us-east
-  bucket: assimilation-official
-  local_dir: build-artifacts
-  upload-dir: build-artifacts
+     - stage: test
+       name: test
+       script:
+         - echo "testing stuff"
+      - stage: deploy
+        name: upload to s3
+        deploy:
+          provider: s3
+          endpoint: https://s3.us-east.objectstorage.softlayer.net
+          region: us-east
+          bucket: assimilation-official
+          local_dir: build-artifacts
+          upload-dir: build-artifacts
