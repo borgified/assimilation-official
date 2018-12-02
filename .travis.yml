@@ -12,22 +12,22 @@ jobs:
       script:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/debian/9/timezone .
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp README.md s3://assimilation-project/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp README.md s3://assimilation-official/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md
     - stage: build
       name: ubuntu
       script:
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/Dockerfile .
         - cp $TRAVIS_BUILD_DIR/docker/dockerfiles/ubuntu/18.04/timezone .
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp README.md s3://assimilation-project/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp README.md s3://assimilation-official/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md
     - stage: test
       name: test
       script:
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp s3://assimilation-project/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md for_testing/README.md
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp s3://assimilation-official/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md for_testing/README.md
         - cat for_testing/README.md
     - stage: deploy
       name: deploy
       script:
-        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp s3://assimilation-project/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md build-artifacts/README.md
+        - aws --endpoint-url=https://s3.us-east.objectstorage.softlayer.net s3 cp s3://assimilation-official/${TRAVIS_JOB_NAME}_${TRAVIS_JOB_NUMBER}_README.md build-artifacts/README.md
       deploy:
         provider: s3
         endpoint: https://s3.us-east.objectstorage.softlayer.net
